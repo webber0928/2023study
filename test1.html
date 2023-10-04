@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maze Game</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+
+  <script>
+    // Define the configuration for the game
+    const config = {
+      type: Phaser.AUTO,
+      width: 800,
+      height: 600,
+      scene: {
+        preload: preload,
+        create: create
+      }
+    };
+
+    // Create a new Phaser game with the defined configuration
+    const game = new Phaser.Game(config);
+
+    // Preload function to load assets
+    function preload() {
+      this.load.image('player', 'assets/dude.png'); // Load player image
+      this.load.image('wall', 'assets/platform.png'); // Load wall image
+    }
+
+    // Create function to set up the game
+    function create() {
+      // Create the player sprite
+      const player = this.add.sprite(100, 100, 'player');
+
+      // Create walls
+      const walls = this.physics.add.staticGroup();
+      walls.create(400, 300, 'wall');
+    }
+  </script>
+</body>
+</html>

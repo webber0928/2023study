@@ -18,6 +18,19 @@
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
 
   <script>
+    const mazeData = [
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+      [1, 0, 1, 0, 1, 0, 1, 1, 0, 1],
+      [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
+      [1, 0, 1, 1, 1, 1, 0, 1, 0, 1],
+      [1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    ];
+
+    let player;
+    let cursors;
+
     // Define the configuration for the game
     const config = {
       type: Phaser.AUTO,
@@ -34,18 +47,41 @@
 
     // Preload function to load assets
     function preload() {
-      this.load.image('player', 'assets/dude.png'); // Load player image
-      this.load.image('wall', 'assets/platform.png'); // Load wall image
+      this.load.image('player', 'assets/star.png'); // Load player image
+      this.load.image('target', 'assets/platform.png');
+      this.load.image('wall', 'assets/bomb.png');
     }
 
     // Create function to set up the game
     function create() {
-      // Create the player sprite
-      const player = this.add.sprite(100, 100, 'player');
+      // Create maze tiles based on mazeData
+      for (let row = 0; row < mazeData.length; row++) {
+        for (let col = 0; col < mazeData[row].length; col++) {
+          const tile = mazeData[row][col] === 1 ? 'wall' : 'empty';
+          this.add.image(col * 32, row * 32, tile);
+        }
+      }
+    
+      // Add player and target
+      player = this.add.image(32, 32, 'player');
+      const target = this.add.image(352, 352, 'target');
 
-      // Create walls
-      const walls = this.physics.add.staticGroup();
-      walls.create(400, 300, 'wall');
+      // Enable keyboard input
+      cursors = this.input.keyboard.createCursorKeys();
+    }
+
+    function update() {
+      // Player movement
+      if (cursors.left.isDown) {
+        player.x -= 2;
+      } else if (cursors.right.isDown) {
+        player.x += 2;
+      }
+      if (cursors.up.isDown) {
+        player.y -= 2;
+      } else if (cursors.down.isDown) {
+        player.y += 2;
+      }
     }
   </script>
 </body>

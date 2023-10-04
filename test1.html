@@ -25,12 +25,24 @@
       [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
       [1, 0, 1, 1, 1, 1, 0, 1, 0, 1],
       [1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 0, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 0, 1, 1, 1, 1, 1, 1],
+      [1, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+      [1, 0, 1, 1, 1, 1, 0, 1, 0, 1],
+      [1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+      [1, 1, 1, 0, 1, 1, 1, 1, 1, 0],
+      [1, 1, 1, 0, 1, 1, 1, 1, 0, 0],
+      [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
+      [1, 0, 1, 1, 1, 1, 0, 1, 0, 1],
+      [1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+      [1, 1, 1, 0, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 0, 1, 1, 1, 1, 1, 1],
     ];
-
+    
     let player;
     let cursors;
-
+    let target;
+    
     // Define the configuration for the game
     const config = {
       type: Phaser.AUTO,
@@ -38,22 +50,23 @@
       height: 600,
       scene: {
         preload: preload,
-        create: create
+        create: create,
+        update: update
       }
     };
-
+    
     // Create a new Phaser game with the defined configuration
     const game = new Phaser.Game(config);
-
+    
     // Preload function to load assets
-    function preload() {
-      this.load.image('player', 'assets/star.png'); // Load player image
-      this.load.image('target', 'assets/platform.png');
-      this.load.image('wall', 'assets/bomb.png');
+    function preload () {
+      this.load.image('player', 'https://webber0928.github.io/2023study/assets/star.png'); // Load player image
+      this.load.image('target', 'https://webber0928.github.io/2023study/assets/platform.png');
+      this.load.image('wall', 'https://webber0928.github.io/2023study/assets/bomb.png');
     }
-
+    
     // Create function to set up the game
-    function create() {
+    function create () {
       // Create maze tiles based on mazeData
       for (let row = 0; row < mazeData.length; row++) {
         for (let col = 0; col < mazeData[row].length; col++) {
@@ -64,23 +77,75 @@
     
       // Add player and target
       player = this.add.image(32, 32, 'player');
-      const target = this.add.image(352, 352, 'target');
-
+      target = this.add.image(352, 352, 'target');
+    
       // Enable keyboard input
       cursors = this.input.keyboard.createCursorKeys();
+    
+      // 创建胜利消息文本，但初始时不可见
+      victoryText = this.add.text(200, 200, 'Victory!', { fontSize: '32px', fill: '#fff' });
+      victoryText.setVisible(false);
     }
-
-    function update() {
+    
+    function update () {
+      //console.log('L22')
       // Player movement
+      //       if (cursors.left.isDown) {
+      //         if (player.x > 0) {
+      //           player.x -= 2;
+      //         }
+      //       } else if (cursors.right.isDown) {
+      //         if (player.x < 800 - player.width) player.x += 2;
+      //       }
+      //       if (cursors.up.isDown) {
+      //         if (player.y > 0) player.y -= 2;
+      //       } else if (cursors.down.isDown) {
+      //         if (player.y < 600 - player.height) player.y += 2;
+      //       }
+    
+      if (Phaser.Geom.Intersects.RectangleToRectangle(player.getBounds(), target.getBounds())) {
+        // Player has reached the target, you can add your victory logic here
+        // For example, displaying a victory message or advancing to the next level
+        console.log('Victory! You reached the target!');
+        // 显示胜利消息
+        victoryText.setVisible(true);
+    
+        // 重置游戏，你可以根据需要进行其他操作，例如加载下一关
+        setTimeout(() => {
+          // 隐藏胜利消息
+          victoryText.setVisible(false);
+    
+          // 重置玩家位置
+          player.x = 32;
+          player.y = 32;
+        }, 2000); // 2秒后重置游戏，你可以根据需要调整时间
+      }
+    
+      const playerSpeed = 2;
+    
+      // 计算目标位置
+      let targetX = player.x;
+      let targetY = player.y;
+    
       if (cursors.left.isDown) {
-        player.x -= 2;
+        targetX -= playerSpeed;
       } else if (cursors.right.isDown) {
-        player.x += 2;
+        targetX += playerSpeed;
       }
       if (cursors.up.isDown) {
-        player.y -= 2;
+        targetY -= playerSpeed;
       } else if (cursors.down.isDown) {
-        player.y += 2;
+        targetY += playerSpeed;
+      }
+    
+      // 检查目标位置是否是可行走的地方（没有墙壁）
+      const targetTileX = Math.floor(targetX / 32); // 32 是你每个图块的宽度
+      const targetTileY = Math.floor(targetY / 32); // 32 是你每个图块的高度
+    
+      if (mazeData[targetTileY][targetTileX] === 0) {
+        // 目标位置是可行走的地方，允许移动
+        player.x = targetX;
+        player.y = targetY;
       }
     }
   </script>

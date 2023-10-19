@@ -50,6 +50,10 @@ function preload ()
     this.load.image('star', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+    // this.load.image('A', 'assets/熊.jpg');
+    // this.load.image('B', 'assets/神奇寶貝鈴鐺.png');
+    // this.load.image('bingo', 'assets/鈴鐺.jpg');
+    this.load.image('target', 'https://webber0928.github.io/2023study/assets/鈴鐺.jpg');
 }
 
 function create ()
@@ -75,6 +79,13 @@ function create ()
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
+
+    target = this.add.image(352, 352, 'target');
+    target.setScale(0.2);
+
+    // 创建胜利消息文本，但初始时不可见
+    victoryText = this.add.text(200, 200, 'Victory!', { fontSize: '32px', fill: '#fff' });
+    victoryText.setVisible(false);
 
     //  Our player animations, turning, walking left and walking right.
     this.anims.create({
@@ -147,27 +158,23 @@ function update ()
         player.setVelocityX(-160);
 
         player.anims.play('left', true);
-        console.log('L145')
     }
     else if (cursors.right.isDown)
     {
         player.setVelocityX(160);
 
         player.anims.play('right', true);
-        console.log('L152')
     }
     else
     {
         player.setVelocityX(0);
 
         player.anims.play('turn');
-        // console.log('L159')
     }
 
     if (cursors.up.isDown && player.body.touching.down)
     {
         player.setVelocityY(-330);
-        console.log('L165')
     }
 
     // 跳起來的部分
@@ -176,12 +183,24 @@ function update ()
         player.setVelocityY(-330);
     }
 
+    if (this.input.pointer1.isDown) {
+        if (this.input.pointer1.x > player.x) {
+            player.setVelocityX(160);
+            player.anims.play('right', true);
+        } else if (this.input.pointer1.x < player.x){
+            player.setVelocityX(-160);
+            player.anims.play('left', true);
+        } else {
+            player.setVelocityX(0);
+            player.anims.play('turn');
+        }
+    }
+
 }
 
 function collectStar (player, star)
 {
     star.disableBody(true, true);
-
     //  Add and update the score
     score += 10;
     scoreText.setText('Score: ' + score);

@@ -100,6 +100,11 @@ function create ()
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
 
+    // test
+    this.graphics = this.add.graphics();
+    this.input.addPointer(3);
+    
+
     //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
     stars = this.physics.add.group({
         key: 'star',
@@ -142,24 +147,35 @@ function update ()
         player.setVelocityX(-160);
 
         player.anims.play('left', true);
+        console.log('L145')
     }
     else if (cursors.right.isDown)
     {
         player.setVelocityX(160);
 
         player.anims.play('right', true);
+        console.log('L152')
     }
     else
     {
         player.setVelocityX(0);
 
         player.anims.play('turn');
+        // console.log('L159')
     }
 
     if (cursors.up.isDown && player.body.touching.down)
     {
         player.setVelocityY(-330);
+        console.log('L165')
     }
+
+    // 跳起來的部分
+    if (this.input.pointer1.isDown && player.body.touching.down)
+    {
+        player.setVelocityY(-330);
+    }
+
 }
 
 function collectStar (player, star)

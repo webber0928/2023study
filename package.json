@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/webber0928/2023study/issues"
   },
-  "homepage": "https://github.com/webber0928/2023study#readme"
+  "homepage": "https://github.com/webber0928/2023study#readme",
+  "dependencies": {
+    "http-server": "^14.1.1",
+    "phaser": "^3.60.0"
+  }
 }

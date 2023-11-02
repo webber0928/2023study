@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phaser Game</title>
+    <script src="node_modules/phaser/dist/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+        canvas {
+            display: block;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+<script>
+var isiPad = navigator.userAgent.match(/iPad/i) != null;
+var width = isiPad ? window.innerWidth : 800;
+var height = isiPad ? window.innerHeight : 600;
+
+var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+var width = isMobile ? window.innerWidth : 800;
+var height = isMobile ? window.innerHeight : 600;
+
+var width = window.innerWidth;
+var height = window.innerHeight;
+
+var config = {
+    type: Phaser.AUTO,
+    width: width,
+    height: height,
+    scene: {
+        preload: preload,
+        create: create,
+        update: update
+    }
+};
+
+var game = new Phaser.Game(config);
+var startButton;
+
+function preload() {
+    // 加載資源
+    this.load.image('logo', 'assets/aa.gif');
+    this.load.image('startButton', 'assets/startButton.png');
+}
+
+function create() {
+    var self = this;
+    // 創建遊戲場景
+    var logo = this.add.image(width / 2, height / 2, 'logo');
+    logo.setOrigin(0.5, 0.5);
+    startButton = this.add.image(width / 2, height / 2, 'startButton');
+    startButton.setInteractive();
+
+    startButton.on('pointerup', function () {
+        // 在這裡添加開始遊戲的邏輯
+        console.log('遊戲開始！');
+        var playerName = prompt("請輸入您的姓名：");
+        if (playerName) {
+            console.log("玩家姓名：", playerName);
+
+            var easyButton = self.add.text(100, 200, '低', { fill: '#0f0' });
+            easyButton.setInteractive();
+            easyButton.on('pointerup', function () {
+                startGame('低');
+            });
+
+            var mediumButton = self.add.text(300, 200, '中', { fill: '#ff0' });
+            mediumButton.setInteractive();
+            mediumButton.on('pointerup', function () {
+                startGame('中');
+            });
+
+            var hardButton = self.add.text(500, 200, '高', { fill: '#f00' });
+            hardButton.setInteractive();
+            hardButton.on('pointerup', function () {
+                startGame('高');
+            });
+        } else {
+            alert("請輸入玩家姓名！");
+        }
+    });
+
+    startButton.on('pointerover', function () {
+        startButton.setScale(1.2); // 改變按鈕大小
+    });
+
+    startButton.on('pointerout', function () {
+        startButton.setScale(1); // 恢復按鈕大小
+    });
+
+    if (startButton.width > width || startButton.height > height) {
+        startButton.setPosition(width / 2, height / 2);
+    }
+}
+
+function update() {
+    // 遊戲更新邏輯
+}
+</script>
+</html>

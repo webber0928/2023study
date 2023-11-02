@@ -312,6 +312,50 @@ const Page2 = {
     },
 };
 
+const PageDefault = {
+    template: '<div id="phaser-x"></div>',
+    data () {
+        return {
+            show: true,
+        };
+    },
+    mounted () {
+        this.initPhaser();
+    },
+    destroyed () {
+        this.destroyPhaser();
+    },
+    methods: {
+        initPhaser () {
+            this.game = new Phaser.Game({
+                type: Phaser.AUTO,
+                width: 800,
+                height: 600,
+                scene: {
+                    preload: preload,
+                    create: create,
+                    update: update,
+                },
+            });
+
+            function preload () {
+                
+            }
+
+            function create () {
+                // 把背景放進去
+            }
+
+            function update () {
+                
+            }
+        },
+        destroyPhaser () {
+            this.game.destroy(true);
+        }
+    },
+};
+
 const routes = [
     { path: '/page1', component: Page1 },
     { path: '/page2', component: Page2 }

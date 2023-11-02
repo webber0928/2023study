@@ -5,16 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phaser Game</title>
     <script src="node_modules/phaser/dist/phaser.js"></script>
-    <style type="text/css">
-        body {
-            margin: 0;
-        }
-        canvas {
-            display: block;
-            margin: auto;
-        }
-    </style>
-    <script src="libs/wipe_to_a_scene.js"></script>
+    <link href="style/main.css" rel="stylesheet"> 
+    <script src="libs/app.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/milligram@1.4.1/dist/milligram.min.css">
+    <!-- <script src="libs/wipe_to_a_scene.js"></script> -->
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.5.3/dist/vue-router.js"></script>
 </head>
-<body></body>
+<body>
+    <div id="app">
+        <router-link to="/page1" class="button" >Page 1</router-link>
+        <router-link to="/page2" class="button" >Page 2</router-link>
+        <router-view></router-view>
+    </div>
+
+    <script src="libs/vue-app.js"></script>
+</body>
 </html>

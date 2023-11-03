@@ -1,22 +1,39 @@
 
 const PageList = {
     Page1: {
-        template: '<div><h2>動態數字時鐘</h2><p>{{ time }}</p></div>',
+        template: `
+        <form id="page1">
+            <fieldset v-show="step1">
+                <label for="nameField" class="white-title"><h1>請輸入名字</h1></label>
+                <div class="box">
+                    <input type="text" placeholder="請輸入名字" id="nameField" v-model="nameField">
+                    <input class="button button-black button-large" type="submit" value="好，開始！" @click="setName">
+                </div>
+            </fieldset>
+            <fieldset v-show="step2" class="box">
+                <label for="nameField"><h3>嗨～<span style="color: #000;">{{nameField}}</span> <br> 請選擇關卡</h3></label>
+                <button class="button button-outline button-large" @click="goGame('1')">初級</button>
+                <button class="button button-outline button-large" @click="goGame('2')">中級</button>
+                <button class="button button-outline button-large" @click="goGame('3')">高級</button>
+            </fieldset>
+        </form>
+        `,
         data: function () {
             return {
-                time: ''
+                step1: true,
+                step2: false,
+                nameField: ''
             };
         },
-        created: function () {
-            var self = this;
-            setInterval(function () {
-                self.time = self.getCurrentTime();
-            }, 1000);
-        },
         methods: {
-            getCurrentTime: function () {
-                var now = new Date();
-                return now.toLocaleTimeString();
+            setName() {
+                if (!this.nameField) return alert('你沒有填寫名字！！')
+                Cookies.set('name', this.nameField)
+                this.step1 = false
+                this.step2 = true
+            },
+            goGame(key) {
+                this.$router.push('/page2');
             }
         }
     },
@@ -354,6 +371,8 @@ const PageList = {
         },
         methods: {
             initPhaser () {
+                this.msSpeed = speed;
+                this.value = 0;
                 this.game = new Phaser.Game({
                     type: Phaser.AUTO,
                     width: 800,
@@ -374,6 +393,21 @@ const PageList = {
             },
             destroyPhaser () {
                 this.game.destroy(true);
+            },
+            moveLeft(delta) {
+                if (this.value > 0) { this.reset(); }
+                this.value -= this.msSpeed * delta;
+                if (this.value < -1) { this.value = -1; }
+            },
+        
+            moveRight(delta) {
+                if (this.value < 0) { this.reset(); }
+                this.value += this.msSpeed * delta;
+                if (this.value > 1) { this.value = 1; }
+            },
+        
+            reset() {
+                this.value = 0;
             }
         },
     }

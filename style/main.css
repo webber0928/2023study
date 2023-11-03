@@ -1,7 +1,49 @@
 body {
     margin: 0;
+    background-image: url(https://assets-cdn.kahoot.it/player/v2/assets/business_default-da04c7ff.jpg?auto=webp&width=1800&crop=3%3A2);
 }
 canvas {
     display: block;
     margin: auto;
+    margin-top: 60px;
+}
+
+#page1 {
+    margin-top: 50px;
+}
+
+#page1 .box{
+    width: 80%;
+    max-width: 600px;
+    background: #fff;
+    margin: auto;
+    padding: 30px 30px 20px 30px;
+}
+
+#page1 .box input{
+    text-align: center;
+
+}
+
+.white-title {
+    color: rgb(255, 255, 255);
+}
+
+.button.button-black {
+    margin-top: 10px;
+    border: 0.1rem solid rgb(51, 51, 51);
+    background: rgb(51, 51, 51);
+    color: rgb(255, 255, 255);
+}
+
+.button.button-large {
+    font-size: 2rem;
+    height: 5.5rem;
+    line-height: 4.5rem;
+    padding: 0 2rem;
+}
+
+input#nameField[type='text'] {
+    height: 5.8rem;
+    font-size: 2rem;
 }
